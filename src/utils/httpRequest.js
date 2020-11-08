@@ -1,20 +1,11 @@
-// import Vue from 'vue'
+
 import axios from 'axios'
-// import router from '@/router'
-// import qs from 'qs'
-// import merge from 'lodash/merge'
-// import { clearLoginInfo } from '@/utils'
-// const headerInfo = JSON.parse(sessionStorage.getItem('headerInfo'))
-// console.log(headerInfo)
 
 const http = axios.create({
   timeout: 1000 * 6,
   withCredentials: false,
   headers: {
     'Content-Type': 'application/json; charset=utf-8'
-    // 'tillName': headerInfo ? headerInfo.tillName : 'ads.demo.wecrm',
-    // 'pwd': headerInfo ? headerInfo.pwd : 'ads1234',
-    // 'brandName': headerInfo ? headerInfo.brandName : 'adidas'
   }
 })
 
@@ -22,7 +13,6 @@ const http = axios.create({
  * 请求拦截
  */
 http.interceptors.request.use(config => {
-  // { tillName: 'ads.demo.wecrm', pwd: 'ads1234', brandName: 'adidas' },
   const headerInfo = JSON.parse(sessionStorage.getItem('headerInfo'))
   if (headerInfo) {
     config.headers['tillName'] = headerInfo.tillName

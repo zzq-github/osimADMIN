@@ -80,7 +80,12 @@
           <el-radio v-model="addForm.type" label="0">不通过</el-radio>
         </el-form-item>
         <el-form-item label="购买时间" prop="purchaseDate">
-          <el-input  v-model="addForm.purchaseDate"></el-input>
+          <el-date-picker
+            v-model="addForm.purchaseDate"
+            type="date"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期">
+          </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -92,7 +97,7 @@
 </template>
 
 <script>
-  import { queryProductList } from '@/api/baseApi'
+  import { queryProductList, verify } from '@/api/baseApi'
 import { format } from 'path'
   export default {
     data () {
@@ -183,47 +188,41 @@ import { format } from 'path'
       },
       // 添加修改提交
       submitAddForm (formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.$confirm(`确认${!this.addForm.id ? '新增' : '编辑'}商品?`, '提示', {type: 'warning'}).then(() => {
-              this.addLoading = true
-              let mType = ''
-              if (this.addForm.type == '1') {
-                if (this.addForm.purchaseDate) {
-                  mType = 3
-                } else {
-                  mType = 2
-                }
-              } else {
-                mType = 4
-              }
-              let params = {
-                adminId: '1',
-                id: this.addForm.id,
-                status: mType,
-                purchaseDate: this.addForm.purchaseDate
-              }
-              // 新增提交
-              this.$http.post(addBanner, params).then(res => {
-                if (res.data.code == '200') {
-                  this.$notify({title: '提示', message: '审核成功！', type: 'success'})
-                  this.addVisible = false
-                  this.getDataList()
-                } else {
-                  this.$notify({title: '提示', message: res.data.msg, type: 'error'})
-                }
-              }).catch(error => {
-                this.$notify({title: '提示', message: '审核失败！', type: 'error'})
-                console.log(error)
-              }).finally(() => {
-                this.addLoading = false
-              })
-            }).catch(() => {})
+        this.$confirm(`确认审核?`, '提示', {type: 'warning'}).then(() => {
+          this.addLoading = true
+          let mType = ''
+          if (this.addForm.type == '1') {
+            if (this.addForm.purchaseDate) {
+              mType = 3
+            } else {
+              mType = 2
+            }
           } else {
-            this.$notify({title: '提示', message: '请把信息填写完整！', type: 'warning'})
-            return false
+            mType = 4
           }
-        })
+           let loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'))
+          let params = {
+            adminId: loginInfo.id,
+            id: this.addForm.id,
+            status: mType,
+            purchaseDate: this.addForm.purchaseDate
+          }
+          // 新增提交
+          this.$http.post(verify, params).then(res => {
+            if (res.data.code == '200') {
+              this.$notify({title: '提示', message: '审核成功！', type: 'success'})
+              this.addVisible = false
+              this.getDataList()
+            } else {
+              this.$notify({title: '提示', message: res.data.msg, type: 'error'})
+            }
+          }).catch(error => {
+            this.$notify({title: '提示', message: '审核失败！', type: 'error'})
+            console.log(error)
+          }).finally(() => {
+            this.addLoading = false
+          })
+        }).catch(() => {})
       }
     }
   }

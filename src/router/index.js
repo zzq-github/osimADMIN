@@ -6,9 +6,6 @@
  */
 import Vue from 'vue'
 import Router from 'vue-router'
-// import http from '@/utils/httpRequest'
-// import { isURL } from '@/utils/validate'
-// import { clearLoginInfo } from '@/utils'
 
 Vue.use(Router)
 
@@ -38,18 +35,11 @@ const mainRoutes = {
     { path: '/batchUnbind', component: _import('common/batchUnbind/batchUnbind'), name: 'batchUnbind', meta: { title: '批量解绑', isTab: true } },
     { path: '/batchExchange', component: _import('common/batchExchange/batchExchange'), name: 'batchExchange', meta: { title: '批量换新', isTab: true } }
   ]
-  // beforeEnter (to, from, next) {
-  //   let loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'))
-  //   console.log(loginInfo)
-  //   if (!loginInfo) {
-  //     next({ name: 'login' })
-  //   }
-  //   next()
-  // }
 }
 
 const router = new Router({
-  mode: 'hash',
+  // mode: 'hash',
+  mode: 'history',
   scrollBehavior: () => ({ y: 0 }),
   // isAddDynamicMenuRoutes: false, // 是否已经添加动态(菜单)路由
   routes: globalRoutes.concat(mainRoutes)

@@ -1,7 +1,7 @@
 <template>
   <main class="site-content" :class="{ 'site-content--tabs': $route.meta.isTab }">
     <!-- 主入口标签页 s -->
-    <el-tabs
+    <!-- <el-tabs
       v-if="$route.meta.isTab"
       v-model="mainTabsActiveName"
       :closable="true"
@@ -32,9 +32,9 @@
           </keep-alive>
         </el-card>
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs> -->
     <!-- 主入口标签页 e -->
-    <el-card v-else :body-style="siteContentViewHeight">
+    <el-card :body-style="siteContentViewHeight">
       <keep-alive>
         <router-view />
       </keep-alive>

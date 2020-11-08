@@ -13,3 +13,6 @@ export let uploadExcleExchange = baseHost + '/admin/batch/exchange/list'
 export let unbindListExchange = baseHost + '/admin/batch/exchange'
 
 export let queryProductList = baseHost + '/admin/product/list'
+
+// 审核 http://aobai-test.capillarytech-cn.com/product/admin/verify
+export let verify = baseHost + '/product/admin/verify'
