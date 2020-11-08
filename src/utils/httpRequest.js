@@ -4,33 +4,36 @@ import axios from 'axios'
 // import qs from 'qs'
 // import merge from 'lodash/merge'
 // import { clearLoginInfo } from '@/utils'
-const headerInfo = JSON.parse(sessionStorage.getItem('headerInfo'))
+// const headerInfo = JSON.parse(sessionStorage.getItem('headerInfo'))
+// console.log(headerInfo)
 
 const http = axios.create({
   timeout: 1000 * 6,
   withCredentials: false,
   headers: {
-    'Content-Type': 'application/json; charset=utf-8',
-    'tillName': headerInfo ? headerInfo.tillName : 'ads.demo.wecrm',
-    'pwd': headerInfo ? headerInfo.pwd : 'ads1234',
-    'brandName': headerInfo ? headerInfo.brandName : 'adidas'
+    'Content-Type': 'application/json; charset=utf-8'
+    // 'tillName': headerInfo ? headerInfo.tillName : 'ads.demo.wecrm',
+    // 'pwd': headerInfo ? headerInfo.pwd : 'ads1234',
+    // 'brandName': headerInfo ? headerInfo.brandName : 'adidas'
   }
 })
 
 /**
  * 请求拦截
  */
-// http.interceptors.request.use(config => {
-//   // { tillName: 'ads.demo.wecrm', pwd: 'ads1234', brandName: 'adidas' },
-//   // console.log(JSON.parse(sessionStorage.getItem('loginInfo')))
-//   // config.headers['tillName'] = 'ads.demo.wecrm'
-//   // config.headers['pwd'] = 'ads1234'
-//   // config.headers['brandName'] = 'adidas'
-//   // config.headers['token'] = Vue.cookie.get('token') // 请求头带上token
-//   // return config
-// }, error => {
-//   return Promise.reject(error)
-// })
+http.interceptors.request.use(config => {
+  // { tillName: 'ads.demo.wecrm', pwd: 'ads1234', brandName: 'adidas' },
+  const headerInfo = JSON.parse(sessionStorage.getItem('headerInfo'))
+  if (headerInfo) {
+    config.headers['tillName'] = headerInfo.tillName
+    config.headers['pwd'] = headerInfo.pwd
+    config.headers['brandName'] = headerInfo.brandName
+  }
+  // config.headers['token'] = Vue.cookie.get('token') // 请求头带上token
+  return config
+}, error => {
+  return Promise.reject(error)
+})
 
 /**
  * 响应拦截
